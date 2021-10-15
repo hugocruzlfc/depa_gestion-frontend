@@ -1,0 +1,42 @@
+<div class="card border-light mb-3" style="max-width:100%;">
+    <div class="card-body">
+      <div class="container-fluid">
+        <br>
+        <div class="container">
+          <div class="row">
+            <div class="card border-light mb-3" style="max-width: 100%; text-align: center;">
+              <div class="card-header"><h4 class="card-title">Bienvenido al Sistema de Gestión para Reportes de Incidencias</h4></div>
+            </div>
+            
+          </div>
+        </div>
+        <br>
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3" style="max-width:100%;">
+              <div class="card-header">Incidencias</div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6" style="padding-left: 30px;"><i class="fa fa-tasks fa-4x"></i></div>
+                  <div class="col-md-6" style="text-align: right;padding-right: 30px;">
+                    <div class="row"><h1>{{cantIncidents}}</h1></div>
+                    <div class="row justify-content-end" >Incidencias sin atender</div>
+                  </div>
+                </div>
+                </div>
+              <div class="card-footer text-primary" style="background-color: white;">
+                <div class="row">
+                  <div class="col-md-6" style="text-align: left;cursor: pointer;" [routerLink]="['/sgri/home/incidents']" >Ver Detalles</div>
+                  <div class="col-md-6" style="text-align: right;cursor: pointer;"
+                  [routerLink]="['/sgri/home/incidents']"> <i class="fa fa-arrow-circle-right"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+       
+         
+        </div>
+      </div>
+      
+    </div>
+  </div>

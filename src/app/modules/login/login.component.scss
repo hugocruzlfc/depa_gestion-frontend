@@ -1,0 +1,19 @@
+.container-fluid{
+    background-color: #f4f4f4;
+}
+
+.colorMessageErrors{
+    margin-top: 5px;
+    color : rgb(243, 30, 30);
+    // background-color:wheat;
+    // border-radius: 10px;
+ }
+
+ .errspan {
+    float: right;
+    margin-right: 20px;
+    margin-top: -35px;
+    position: relative;
+    color: black;
+    z-index: 2;
+}

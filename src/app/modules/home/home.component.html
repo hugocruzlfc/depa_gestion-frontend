@@ -1,0 +1,84 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="assets/images/icon.JPG" style="width: 70px; height: 50px;">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active"><h5>SGRI</h5>
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active">Inicio
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+            <li class="nav-item">
+              <a class="nav-link active">{{currentUser}}
+                <span class="visually-hidden">(current)</span>
+              </a>
+            </li>
+        
+        </ul>
+        <div class="d-flex">
+          <div class="nav-item">
+            <ng-container *ngIf="admin">
+              <i class="fa fa-bell" style="color: white;"  
+              data-bs-toggle="tooltip" data-bs-placement="bottom" 
+              title="Tiene incidencias por atender">
+              <span [matBadge]="totalNotifications"
+              matBadgeSize="small" > 
+                </span></i>
+            </ng-container>
+           
+          <i class="fa fa-user-circle fa-2x"  style="color: white;margin-left: 20px;margin-right: 5px;"></i>
+          <span style="margin-right: 5px;color: white;">{{userName}}</span>
+          <span class="sessionOut" style="margin-left: 10px; cursor: pointer;" (click)="logout()"> Cerrar Sesión</span>
+        </div>
+          
+        </div>
+      </div>
+    </div>
+  </nav>
+ </header>
+ <br>
+ <br>
+ <br>
+ <br>
+<body style="padding-top: 20px;">
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <router-outlet></router-outlet>
+          </div>      
+        </div> 
+      </div>
+</body>
+<footer style="padding-top: 13px;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <figure>
+          <blockquote class="blockquote">
+            <p class="mb-0" style="color: white;">Misión:</p>
+          
+          </blockquote>
+          <figcaption class="blockquote-footer"  style="color: white;">
+            Proyectar tareas de soporte técnico y mantenimiento de software y hardware. Asesorará en la adquisición, actualización y mantenimiento del equipamiento informático. Participar en la elaboración de políticas del uso y manejo de los recursos informáticos.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+  </nav>
+</footer>
+      
+

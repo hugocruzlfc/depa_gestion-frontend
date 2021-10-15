@@ -1,0 +1,48 @@
+.myBar{
+    border-radius: 30px;
+    width:100%;
+    margin-top: 30px;
+    height: 35px;
+    margin-left: 30px;
+    outline: none;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.myBar:hover{
+    color: white;
+    background-color:rgb(37, 39, 39); 
+    width:90%;  
+}
+
+
+.myBarSelected{
+    border-radius: 30px;
+    width:90%;
+    margin-top: 30px;
+    height: 35px;
+    margin-left: 30px;
+    outline: none;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    color: white;
+    background-color:rgb(37, 39, 39); 
+}
+
+.faIcons{
+    margin-left: 10px;
+    margin-right: 10px; 
+    margin-top: 7px; 
+    margin-bottom: 7px;
+}
+
+.myBar:focus{
+    color: white;
+    background-color:rgb(37, 39, 39); 
+}
+.myBar:any-link{
+    color: white;
+    background-color:rgb(37, 39, 39); 
+}

@@ -1,0 +1,7 @@
+.sessionOut{
+    color: darkgray;
+}
+
+.sessionOut:hover{
+    color: black;
+}

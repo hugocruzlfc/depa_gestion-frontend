@@ -1,0 +1,206 @@
+<div class="card border-light mb-3" style="max-width:100%;">
+    <div class="card-body" style="padding-left: 50px; padding-right: 50px;">
+      <div class="container-fluid">
+        <br>
+        <div class="container">
+          <div class="row">
+            <div class="card border-light mb-3" style="max-width: 100%; text-align: center;">
+              <div class="card-header"><h4 class="card-title">Incidencias</h4></div>
+            </div>
+            
+          </div>
+        </div>
+      
+        <div class="row " style="margin-top: 10px; margin-bottom: 25px;">
+            <div class="col-md-12"  style="text-align: left; padding-left: 93%;">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-target="#modalIncidencias" data-bs-toggle="modal"
+                (click)=" modalMode(1)">Añadir</button>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <table class="table table-hover" datatable [dtOptions]="dtOptions"  [dtTrigger]="dtTrigger" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Equipo</th>
+                    <th scope="col">Asunto</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Atendida</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-light" *ngFor="let item of incidents; let i = index">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{item.equipments.name}}</td>
+                    <td>{{item.issue}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.attended}}</td>
+                    <td>
+                        <button type="button" class="btn btn-info btn-sm"  data-bs-target="#modalIncidencias" data-bs-toggle="modal"
+                        style="margin-right: 10px;" (click)=" modalMode(2, item)">Detalles</button>
+                        <ng-container *ngIf="currentRole != 'Usuario'">
+                            <button type="button" class="btn btn-success btn-sm" style="margin-right: 10px;"
+                            data-bs-target="#modalIncidencias" data-bs-toggle="modal"
+                          (click)=" modalMode(3, item)">Editar</button>
+                          <button type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;"
+                            data-bs-target="#modalIncidencias" data-bs-toggle="modal"
+                          (click)="deleteIncident(item)">Eliminar</button>
+                          <!-- <button type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;"
+                          (click)="deleteIncident(item)">Eliminar</button> -->
+                          <button type="button" class="btn btn-dark btn-sm" (click)="toAtention(item)"
+                          >Atender</button>
+                        </ng-container>
+                         
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <div class="row"  style="text-align: center;">
+          <div class="col-md-12">
+              <i class="fa fa-arrow-left fa-2x"  style="cursor: pointer; text-align: center;margin-top: 10px" (click)="backClicked()"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="Volver"></i>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal Añadir, Detalles y Editar -->
+  <div class="modal"  id="modalIncidencias">
+    <div class="modal-dialog modal-dialog-centered" type="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" 
+          [ngClass]="{'text-primary': modalTitle=='Añadir Incidencia','text-info': modalTitle=='Detalles del Incidencia', 'text-success': modalTitle=='Editar Incidencia' }"
+          >{{modalTitle}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card border-light mb-3" style="max-width: 100%">
+            
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <form (ngSubmit)="workInIncidents()" [formGroup]="incidentsForm" >
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <ng-container *ngIf="actionMode!=3">
+                                      <input type="text" class="form-control" id="issue" name="issue" 
+                                      placeholder="Asunto"
+                                      formControlName="issue" autocomplete="off">
+                                    </ng-container>
+                                    <ng-container *ngIf="actionMode==3">
+                                      <input type="text" class="form-control" id="issue" name="issue" 
+                                      placeholder="Asunto" readonly=""
+                                      formControlName="issue" autocomplete="off">
+                                    </ng-container>
+                                    <label for="name" >Asunto</label>
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <ng-container *ngIf="actionMode!=3">
+                                      <input type="text" class="form-control" id="description" name="description" 
+                                      placeholder="Descripción"
+                                      formControlName="description" autocomplete="off">
+                                    </ng-container>
+                                    <ng-container *ngIf="actionMode==3">
+                                      <input type="text" class="form-control" id="description" name="description" 
+                                      placeholder="Descripción" readonly=""
+                                      formControlName="description" autocomplete="off">
+                                    </ng-container>
+                                    <label for="name" >Descripción</label>
+                                  </div>
+                            </div>
+                        </div>
+                     
+                      <div class="row">
+                          
+                          <div class="col-md-6">
+                            <div class="form-control">
+                                <ng-container *ngIf="actionMode !=3">
+                                  <label for="type" >Tipo</label>
+                                <select   class="form-select" id="type" name="type" formControlName="type">
+                                  <option  value="">--Seleccione--</option>
+                                  <option value="Hardware">Hardware</option>
+                                  <option value="Software">Software</option>
+                                </select>
+                              </ng-container>
+                                <ng-container *ngIf="actionMode ==3">
+                                  <div class="form-floating">
+                                <input  type="text" class="form-control" id="type" name="type" formControlName="type"  readonly="">
+                                <label for="type" >Tipo</label>
+                                  </div>
+                              </ng-container>
+                              </div>
+                          </div>
+                         
+                          <div class="col-md-6">
+                            <div class="form-control">
+                                <ng-container *ngIf="actionMode ==1">
+                                  <label for="equipmentId" >Equipo</label>
+                                <select   class="form-select" id="equipmentId" name="equipmentId" formControlName="equipmentId"> 
+                                  <option >--Seleccione--</option>
+                                  <option [value]= "item.id"  *ngFor="let item of arrayEquipments | async"> 
+                                         {{item.name}}
+                                  </option>
+                                </select>
+                              </ng-container>
+                                <ng-container *ngIf="actionMode !=1">
+                                  <div class="form-floating">
+                                <input  type="text" class="form-control" id="equipmentId" name="equipmentId" 
+                                formControlName="equipmentId"  readonly="">
+                                <label for="equipmentId" >Equipo</label>
+                                  </div>
+                              </ng-container>
+                              </div>
+                          </div>
+                      </div>
+                      <ng-container *ngIf="actionMode ==3">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-check">
+                            <label class="form-check-label" style="margin-left: 10px;">Atendida
+                              <input type="checkbox" class="form-check-input" id="attended" name="attended"  
+                              [(ngModel)]="attended" [ngModelOptions]="{standalone: true}" >
+                             </label>
+                            </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    </fieldset>
+                    <div class="form-group">
+                      <div class="row" style="margin-top: 20px;">
+                          <div class="col-md-12" style="text-align: right;">
+                           <ng-container *ngIf="actionMode==1">
+                            <button  class="btn btn-primary" id="buttonSumit" data-bs-dismiss="modal" (click)="workInIncidents()"
+                            type="submit" [disabled]="!incidentsForm.valid">{{modalButtom}}
+                        </button>
+                           </ng-container>
+                           <ng-container *ngIf="actionMode==2">
+                            <button  class="btn btn-success" id="buttonSumit" data-bs-dismiss="modal" (click)="workInIncidents()"
+                            type="submit" [disabled]="!incidentsForm.valid">{{modalButtom}}
+                        </button>
+                           </ng-container>
+                              <button type="button" class="btn btn-dark" style="margin-left: 5px;" data-bs-dismiss="modal">Cancelar</button>
+                          </div>
+                      </div>
+                  </div>
+                  </form>
+                </div>
+              </div>
+              
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

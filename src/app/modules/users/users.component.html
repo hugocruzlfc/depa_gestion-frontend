@@ -1,0 +1,247 @@
+<div class="card border-light mb-3" style="max-width:100%;">
+    <div class="card-body" style="padding-left: 50px; padding-right: 50px;">
+      <div class="container-fluid">
+        <br>
+        <div class="container">
+          <div class="row">
+            <div class="card border-light mb-3" style="max-width: 100%; text-align: center;">
+              <div class="card-header"><h4 class="card-title">Usuarios del Sistema</h4></div>
+            </div>
+            
+          </div>
+        </div>
+      
+        <div class="row " style="margin-top: 10px; margin-bottom: 25px;">
+            <!-- <div class="col-md-6 align-self-center" >
+               <input  #searchBox  type="text" style="width: 50%;"
+                class="form-control" placeholder="Buscar" (keyup) ="searchByFilter(searchBox.value)"/> -->
+                <!-- <input type="text" id="searchCompanies" style="width: 50%;"
+                class="form-control" placeholder="Buscar" (keyup)="searchByFilter($event)"/> 
+            </div> -->
+            <div class="col-md-12"  style="text-align: left; padding-left: 93%;">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-target="#modalUsers" data-bs-toggle="modal"
+                (click)=" modalMode(1)">Añadir</button>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <table class="table table-hover" datatable [dtOptions]="dtOptions"  [dtTrigger]="dtTrigger" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Departamento</th>
+                    <th scope="col">Facultad</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-light" *ngFor="let item of users; let i = index">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{item.name}}</td>
+                    <td>{{item.role}}</td>
+                    <td>{{item.section}}</td>
+                    <td>{{item.faculty}}</td>
+                    <td>
+                        <button type="button" class="btn btn-info btn-sm"  data-bs-target="#modalUsers" data-bs-toggle="modal"
+                        style="margin-right: 10px;" (click)=" modalMode(2, item)">Detalles</button>
+                        <button type="button" class="btn btn-success btn-sm"  data-bs-target="#modalUsers" data-bs-toggle="modal"
+                        (click)=" modalMode(3, item)">Editar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <div class="row"  style="text-align: center;">
+          <div class="col-md-12">
+              <i class="fa fa-arrow-left fa-2x"  style="cursor: pointer; text-align: center;margin-top: 10px;" (click)="backClicked()"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="Volver"></i>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal Añadir, Detalles y Editar -->
+  <div class="modal"  id="modalUsers">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" 
+          [ngClass]="{'text-primary': modalTitle=='Añadir Usuario','text-info': modalTitle=='Detalles del Usuario', 'text-success': modalTitle=='Editar Usuario' }"
+          >{{modalTitle}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card border-light mb-3" style="max-width: 100%">
+            
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <form (ngSubmit)="workerUser()" [formGroup]="userForm" >
+                    <fieldset>
+                      <div class="form-floating">
+                        <ng-container *ngIf="actionMode!=3">
+                          <input type="text" class="form-control" id="name" name="name" 
+                          placeholder="Nombre y Apellidos"
+                          formControlName="name" autocomplete="off">
+                        </ng-container>
+                        <ng-container *ngIf="actionMode==3">
+                          <input type="text" class="form-control" id="name" name="name" 
+                          placeholder="Nombre y Apellidos" readonly=""
+                          formControlName="name" autocomplete="off">
+                        </ng-container>
+                        <label for="name" >Nombre</label>
+                      </div>
+                      <div class="form-floating">
+                        <ng-container *ngIf="actionMode !=3">
+                        <input type="text" class="form-control" id="address" name="address" 
+                        placeholder="Dirección Particular"
+                        formControlName="address" autocomplete="off">
+                        </ng-container>
+                        <ng-container *ngIf="actionMode==3">
+                        <input type="text" class="form-control" id="address" name="address" 
+                        placeholder="Dirección Particular" readonly=""
+                        formControlName="address" autocomplete="off">
+                        </ng-container>
+                        <label for="address" >Dirección</label>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-floating">
+                            <ng-container *ngIf="actionMode !=3">
+                            <input type="number" class="form-control" id="dni" name="dni" 
+                            formControlName="dni"  placeholder="11111111111">
+                          </ng-container>
+                            <ng-container *ngIf="actionMode==3">
+                            <input type="number" class="form-control" id="dni" name="dni"  readonly=""
+                            formControlName="dni"  placeholder="11111111111">
+                          </ng-container>
+                            <label for="dni">No. Carné Identidad </label>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-floating">
+                            <ng-container *ngIf="actionMode !=3">
+                            <input type="number" class="form-control" id="celular" name="celular" 
+                            placeholder="55555555"
+                            formControlName="celular" autocomplete="off">
+                          </ng-container>
+                          <ng-container *ngIf="actionMode ==3">
+                            <input type="number" class="form-control" id="celular" name="celular" 
+                            placeholder="55555555"    readonly=""
+                            formControlName="celular" autocomplete="off">
+                          </ng-container>
+                            <label for="celular">No. Celular </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-floating">
+                            <ng-container *ngIf="actionMode !=3">
+                            <input type="text" class="form-control" id="faculty" name="faculty" 
+                            formControlName="faculty" autocomplete="off"  placeholder="Facultad">
+                          </ng-container>
+                            <ng-container *ngIf="actionMode ==3">
+                            <input type="text" class="form-control" id="faculty" name="faculty"  readonly=""
+                            formControlName="faculty" autocomplete="off"  placeholder="Facultad">
+                          </ng-container>
+                            <label for="faculty" >Facultad</label>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-floating">
+                            <ng-container *ngIf="actionMode !=3">
+                            <input type="text" class="form-control" id="section" name="section"  
+                            formControlName="section" autocomplete="off"  placeholder="Departamento">
+                          </ng-container>
+                            <ng-container *ngIf="actionMode ==3">
+                            <input type="text" class="form-control" id="section" name="section"   readonly=""
+                            formControlName="section" autocomplete="off"  placeholder="Departamento">
+                          </ng-container>
+                            <label for="section" >Departamento</label>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="form-control">
+                        
+                        <ng-container *ngIf="actionMode !=3">
+                          <label for="role" >Rol</label>
+                        <select   class="form-select" id="role" name="role" formControlName="role">
+                          <option  value="">--Seleccione--</option>
+                          <option value="Administrador">Administrador</option>
+                          <option value="Técnico">Técnico</option>
+                          <option value="Usuario">Usuario</option>
+                        </select>
+                      </ng-container>
+                        <ng-container *ngIf="actionMode ==3">
+                          <div class="form-floating">
+                        <input  type="text" class="form-control" id="role" name="role" formControlName="role"  readonly="">
+                        <label for="role" >Rol</label>
+                          </div>
+                      </ng-container>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-floating">
+                            <ng-container *ngIf="actionMode !=3">
+                            <input type="email" class="form-control" id="email" name="email" 
+                            placeholder="usuario@dominio.cu" 
+                            formControlName="email"  autocomplete="off">
+                          </ng-container>
+                            <ng-container *ngIf="actionMode ==3">
+                            <input type="email" class="form-control" id="email" name="email" 
+                            placeholder="usuario@dominio.cu"  readonly=""
+                            formControlName="email"  autocomplete="off">
+                          </ng-container>
+                            <label for="email" >Email</label>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-floating">
+                            <ng-container *ngIf="actionMode !=3">
+                            <input type="text" class="form-control" id="password"
+                            name="password"  placeholder="******" 
+                                formControlName="password">
+                              </ng-container>
+                                <ng-container *ngIf="actionMode ==3">
+                            <input type="text" class="form-control" id="password"
+                            name="password"  placeholder="******"  readonly=""
+                                formControlName="password">
+                              </ng-container>
+                                <label for="password" >Clave</label>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <div class="form-group">
+                      <div class="row" style="margin-top: 20px;">
+                          <div class="col-md-12" style="text-align: right;">
+                           <ng-container *ngIf="actionMode==1">
+                            <button  class="btn btn-primary" id="buttonSumit" data-bs-dismiss="modal" (click)="workerUser()"
+                            type="submit" [disabled]="!userForm.valid">{{modalButtom}}
+                        </button>
+                           </ng-container>
+                           <ng-container *ngIf="actionMode==2">
+                            <button  class="btn btn-success" id="buttonSumit" data-bs-dismiss="modal" (click)="workerUser()"
+                            type="submit" [disabled]="!userForm.valid">{{modalButtom}}
+                        </button>
+                           </ng-container>
+                              <button type="button" class="btn btn-dark" style="margin-left: 5px;" data-bs-dismiss="modal">Cancelar</button>
+                          </div>
+                      </div>
+                  </div>
+                  </form>
+                </div>
+              </div>
+              
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

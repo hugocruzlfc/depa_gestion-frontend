@@ -1,0 +1,16 @@
+<div *ngFor="let alert of alerts" class="{{cssClass(alert)}}">
+    <a  (click)="removeAlert(alert)" style="cursor: pointer;"></a>
+    <ng-container *ngIf="classeActual == 'alert alert-success'">
+        <i class="fa fa-check-circle" style="margin-right: 10px;"></i>
+    </ng-container>
+    <ng-container *ngIf="classeActual == 'alert alert-danger'">
+        <i class="fa fa-times-circle" style="margin-right: 10px;"></i>
+    </ng-container>
+    <ng-container *ngIf="classeActual == 'alert alert-info'">
+        <i class="fa fa-info-circle" style="margin-right: 10px;"></i>
+    </ng-container>
+    <ng-container *ngIf="classeActual == 'alert alert-warning'">
+        <i class="fa fa-exclamation-triangle" style="margin-right: 10px;"></i>
+    </ng-container>
+    <span [innerHTML]="alert.message"></span>
+</div>

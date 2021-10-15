@@ -1,0 +1,79 @@
+<div class="card border-light mb-3" style="max-width:100%;">
+    <div class="card-body" style="padding-left: 50px; padding-right: 50px;">
+      <div class="container-fluid">
+        <br>
+        <div class="container">
+          <div class="row">
+            <div class="card border-light mb-3" style="max-width: 100%; text-align: center;">
+              <div class="card-header"><h4 class="card-title">Reportes Gráficos</h4></div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+              <div class="col-md-5" >
+                    <div class="myBar"  [ngClass]="{'myBarSelected': ruta == 'roturas'}" 
+                    type="button"
+                    (click)="changeMenu(1)"><a><i class="fa fa-window-close faIcons"></i></a>Roturas por meses</div>
+                    <div class="myBar"  [ngClass]="{'myBarSelected': ruta == 'equipos'}" 
+                    type="button" (click)="changeMenu(2)"><a>
+                        <i class="fa fa-desktop faIcons" ></i></a>Equipos por departamentos</div>
+                    <!-- <div class="myBar" type="button" routerLink="dispositivos"><a>
+                        <i class="fa fa-mobile-alt faIcons" ></i></a>Dispositivo</div> -->
+                    <div class="myBar" [ngClass]="{'myBarSelected': ruta == 'comportamiento'}" 
+                    type="button"  (click)="changeMenu(3)"><a>
+                        <i class="fa fa-calendar faIcons" ></i></a>Comportamiento de las roturas en el año</div>
+              </div>
+              <div class="col-md-7">
+                <ng-container *ngIf="ruta == 'roturas'">
+                  <div style="display: block;">
+                    <canvas baseChart 
+                      [datasets]="barChartDataMonts"
+                      [labels]="barChartLabelsMonts"
+                      [options]="barChartOptions"
+                      [plugins]="barChartPlugins"
+                      [legend]="barChartLegend"
+                      [chartType]="barChartType">
+                    </canvas>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="ruta == 'equipos'">
+                  <div style="display: block;">
+                    <canvas baseChart 
+                      [datasets]="barChartDataSections"
+                      [labels]="barChartLabelsSections"
+                      [options]="barChartOptions"
+                      [plugins]="barChartPlugins"
+                      [legend]="barChartLegend"
+                      [chartType]="barChartType">
+                    </canvas>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="ruta =='comportamiento'">
+                  <div style="display: block;">
+                    <canvas baseChart 
+                      [datasets]="barChartDataYears"
+                      [labels]="barChartLabelsYears"
+                      [options]="barChartOptions"
+                      [plugins]="barChartPlugins"
+                      [legend]="barChartLegend"
+                      [chartType]="barChartType">
+                    </canvas>
+                  </div>
+                </ng-container>
+                
+                
+              </div>
+          </div>
+          <div class="row"  style="text-align: center;">
+            <div class="col-md-12">
+                <i class="fa fa-arrow-left fa-2x"  
+                style="cursor: pointer; text-align: center;margin-top: 20px" (click)="backClicked()"
+                data-bs-toggle="tooltip" data-bs-placement="right" title="Volver"></i>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+

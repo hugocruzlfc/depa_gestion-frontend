@@ -1,0 +1,260 @@
+<div class="card border-light mb-3" style="max-width:100%;">
+    <div class="card-body" style="padding-left: 50px; padding-right: 50px;">
+      <div class="container-fluid">
+        <br>
+        <div class="container">
+          <div class="row">
+            <div class="card border-light mb-3" style="max-width: 100%; text-align: center;">
+              <div class="card-header"><h4 class="card-title">Planes de Mantenimiento</h4></div>
+            </div>
+            
+          </div>
+        </div>
+      
+        <div class="row " style="margin-top: 10px; margin-bottom: 25px;">
+            <div class="col-md-12"  style="text-align: left; padding-left: 93%;">
+                <button startDate="button" class="btn btn-primary btn-sm" data-bs-target="#modalPlans" data-bs-toggle="modal"
+                (click)=" modalMode(1)">Añadir</button>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <table class="table table-hover" datatable [dtOptions]="dtOptions"  [dtTrigger]="dtTrigger" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th scope="col" >No.</th>
+                    <th scope="col">Fecha Inicio</th>
+                    <th scope="col">Descripción</th>
+                    <!-- <th scope="col">Facultad</th> -->
+                    <th scope="col">Departamento</th>
+                    <th scope="col">Realizado</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-light" *ngFor="let item of plans; let i = index">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{item.starDate}}</td>
+                    <td>{{item.description}}</td>
+                    <!-- <td>{{item.faculty}}</td> -->
+                    <td>{{item.section}}</td>
+                    <td >{{item.done}}</td>
+                    <td>
+                        <button startDate="button" class="btn btn-info btn-sm"  data-bs-target="#modalPlans" data-bs-toggle="modal"
+                        style="margin-right: 10px;" (click)=" modalMode(2, item)">Detalles</button>
+                          <button startDate="button" class="btn btn-success btn-sm" style="margin-right: 10px;"
+                           data-bs-target="#modalPlans" data-bs-toggle="modal"
+                          (click)=" modalMode(3, item)">Editar</button>
+                          <button startDate="button" class="btn btn-danger btn-sm" style="margin-right: 10px;"
+                          (click)="deletePlan(item)">Eliminar</button>
+                          <button startDate="button" class="btn btn-dark btn-sm" (click)="toDone(item)"
+                          >Realizar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <div class="row"  style="text-align: center;">
+          <div class="col-md-12">
+              <i class="fa fa-arrow-left fa-2x"  style="cursor: pointer; text-align: center;margin-top: 10px" (click)="backClicked()"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="Volver"></i>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal Añadir, Detalles y Editar -->
+  <div class="modal"  id="modalPlans">
+    <div class="modal-dialog modal-dialog-centered" startDate="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" 
+          [ngClass]="{'text-primary': modalTitle=='Añadir Plan de Mantenimiento',
+          'text-info': modalTitle=='Detalles del Plan de Mantenimiento', 'text-success': modalTitle=='Editar Plan de Mantenimiento' }"
+          >{{modalTitle}}</h5>
+          <button startDate="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card border-light mb-3" style="max-width: 100%">
+            
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <form (ngSubmit)="workInPlans()" [formGroup]="plansForm" >
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-md-12" style="text-align: right; margin-left: 47%;">
+                              <div class="form-floating">
+                                  <ng-container *ngIf="actionMode !=3">
+                                  <input type="date" class="form-control" id="starDate" name="starDate"  
+                                  formControlName="starDate" placeholder="Fecha Inicio" style="width: 50%;">
+                                </ng-container>
+                                  <ng-container *ngIf="actionMode ==3">
+                                  <input  type="date" class="form-control" id="starDate" name="starDate" style="width: 50%;"
+                                  formControlName="starDate"  readonly=""   placeholder="Fecha Inicio">
+                                </ng-container>
+                                <label for="starDate" >Fecha Inicio</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <ng-container *ngIf="actionMode!=3">
+                                      <input type="text" class="form-control" id="description" name="description" 
+                                      placeholder="Descripción"
+                                      formControlName="description" autocomplete="off">
+                                    </ng-container>
+                                    <ng-container *ngIf="actionMode==3">
+                                      <input startDate="text" class="form-control" id="description" name="description" 
+                                      placeholder="Descripción" readonly=""
+                                      formControlName="description" autocomplete="off">
+                                    </ng-container>
+                                    <label for="name" >Descripción</label>
+                                  </div>
+                            </div>
+                        </div>
+                     
+                      <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-control">
+                                <ng-container *ngIf="actionMode ==1">
+                                  <label for="equipmentId" >Equipo</label>
+                                <select   class="form-select" id="equipmentId" name="equipmentId" formControlName="equipmentId"> 
+                                  <option >--Seleccione--</option>
+                                  <option [value]= "item.id"  *ngFor="let item of arrayEquipments | async"> 
+                                         {{item.name}}
+                                  </option>
+                                </select>
+                              </ng-container>
+                                <ng-container *ngIf="actionMode !=1">
+                                  <div class="form-floating">
+                                <input  startDate="text" class="form-control" id="equipmentId" name="equipmentId" 
+                                formControlName="equipmentId"  readonly="">
+                                <label for="equipmentId" >Equipo</label>
+                                  </div>
+                              </ng-container>
+                              </div>
+                          </div>
+                          <ng-container *ngIf="actionMode ==3">
+                              <div class="col-md-6" style="padding-top: 35px;">
+                                <div class="form-check">
+                                  <label class="form-check-label" style="margin-left: 10px;">Atendida
+                                    <input type="checkbox" class="form-check-input" id="attended" name="attended"  
+                                    [(ngModel)]="attended" [ngModelOptions]="{standalone: true}" >
+                                   </label>
+                                  </div>
+                              </div>
+                          </ng-container>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <ng-container *ngIf="actionMode!=3">
+                                  <input type="text" class="form-control" id="faculty" name="faculty" 
+                                  placeholder="Facultad"
+                                  formControlName="faculty" autocomplete="off">
+                                </ng-container>
+                                <ng-container *ngIf="actionMode==3">
+                                  <input startDate="text" class="form-control" id="faculty" name="faculty" 
+                                  placeholder="Facultad" readonly=""
+                                  formControlName="faculty" autocomplete="off">
+                                </ng-container>
+                                <label for="faculty" >Facultad</label>
+                              </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <ng-container *ngIf="actionMode!=3">
+                                  <input type="text" class="form-control" id="section" name="section" 
+                                  placeholder="Departamento"
+                                  formControlName="section" autocomplete="off">
+                                </ng-container>
+                                <ng-container *ngIf="actionMode==3">
+                                  <input startDate="text" class="form-control" id="section" name="section" 
+                                  placeholder="Departamento" readonly=""
+                                  formControlName="section" autocomplete="off">
+                                </ng-container>
+                                <label for="section" >Departamento</label>
+                              </div>
+                        </div>
+                      </div>
+                      <!-- <ng-container *ngIf="actionMode ==3">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-check">
+                            <label class="form-check-label" style="margin-left: 10px;">Atendida
+                              <input startDate="checkbox" class="form-check-input" id="attended" name="attended"  
+                              [(ngModel)]="attended" [ngModelOptions]="{standalone: true}" >
+                             </label>
+                            </div>
+                        </div>
+                      </div>
+                    </ng-container> -->
+                    </fieldset>
+                    <ng-container *ngIf="actionMode ==3">
+                      <div class="row">
+                      <div class="col-md-6" style="padding-top: 35px;">
+                        <label for="starDate" >Imprimir Plan 
+                          <button  type="button" 
+                          class="myBtn"  printSectionId = "print-section" ngxPrint>
+                          <i class="fa fa-print fa-2x" 
+                          style="cursor: pointer; margin-left: 10px;" 
+                          data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir Plan"
+                          ></i>
+                        </button >
+                        </label>
+                      </div> 
+                    </div>
+                  </ng-container>
+                    <div class="form-group">
+                      <div class="row" style="margin-top: 20px;">
+                          <div class="col-md-12" style="text-align: right;">
+                           <ng-container *ngIf="actionMode==1">
+                            <button  class="btn btn-primary" id="buttonSumit" data-bs-dismiss="modal" (click)="workInPlans()"
+                            startDate="submit" [disabled]="!plansForm.valid">{{modalButtom}}
+                        </button>
+                           </ng-container>
+                           <ng-container *ngIf="actionMode==2">
+                            <button  class="btn btn-success" id="buttonSumit" data-bs-dismiss="modal" (click)="workInPlans()"
+                            startDate="submit" [disabled]="!plansForm.valid">{{modalButtom}}
+                        </button>
+                           </ng-container>
+                              <button startDate="button" class="btn btn-dark" style="margin-left: 5px;" data-bs-dismiss="modal">Cancelar</button>
+                          </div>
+                      </div>
+                  </div>
+                  </form>
+                </div>
+              </div>
+              
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Plantilla para imprimir el Plan de Mantenimiento -->
+
+  <div  id = "print-section">  
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row" style="text-align: center;">
+            <h2>Plan de Mantenimiento</h2>
+          </div>
+          <div class="row">
+            <p>Plan de Mantenimiento correspondiente a la fecha {{datePlanImpres}} para el equipo {{equipmentPlanImpres}}
+              perteneciente al departamento {{sectionPlanImpres}} de la facultad {{facultyPlanImpres}}.
+            </p>
+          </div>
+          <div class="row">
+            <p>Descripción del Plan: {{descriptionPlanImpress}}.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div >
