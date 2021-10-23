@@ -9,6 +9,7 @@ import {Location} from '@angular/common';
 import { InventoryService } from './../inventory/services/inventory.service';
 import { Plans } from './../shared/interfaces/plans.interface';
 import { PlansService } from './services/plans.service';
+import { NotificationService } from '../notification/services/notification.service';
 
 @Component({
   selector: 'app-plans',
@@ -32,8 +33,13 @@ export class PlansComponent implements OnInit {
   sectionPlanImpres: string = '';
   facultyPlanImpres: string = '';
   descriptionPlanImpress: string = '';
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
 
   constructor(private plansService: PlansService, private _location: Location,
+    private notificationService: NotificationService,
     private fb: FormBuilder,  private inventoryService: InventoryService) { 
     this.plansForm = this.fb.group({
       faculty: ['', [Validators.required]],
@@ -153,23 +159,35 @@ export class PlansComponent implements OnInit {
       console.log(newPlan);
       console.log(this.plansForm.value);
 
-    this.plansService.addNewPlan(newPlan,).subscribe(data=>this.getPlans());
+    this.plansService.addNewPlan(newPlan,).subscribe(data=>{
+      this.getPlans();
+      this.notificationService.success('Plan creado correctamente',this.options);
+    });
    } else { //editar
     var editPlan: Plans = this.plansForm.value;
     editPlan.id =  this.currentPlan.id;
     editPlan.equipmentId=  this.currentPlan.equipmentId;
-    this.plansService.editPlan(editPlan).subscribe(data=>{this.getPlans();});
+    this.plansService.editPlan(editPlan).subscribe(data=>{
+      this.getPlans();
+      this.notificationService.success('Plan actualizado correctamente',this.options);
+    });
    }
    this.plansForm.reset();
   }
 
   toDone(item: Plans){
-    this.plansService.toDone(item).subscribe(data=>{this.getPlans();});
+    this.plansService.toDone(item).subscribe(data=>{
+      this.getPlans();
+      this.notificationService.success('Plan atendido correctamente',this.options);
+    });
   }
 
   deletePlan(item: any){
     const planId = item.id;
-    this.plansService.deletePlan(planId).subscribe(data=>{this.getPlans();});
+    this.plansService.deletePlan(planId).subscribe(data=>{
+      this.getPlans();
+      this.notificationService.warn('Plan eliminado correctamente',this.options);
+    });
   }
 
   backClicked() {

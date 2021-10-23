@@ -16,8 +16,8 @@ export class NotificationComponent implements OnInit, OnDestroy {
     @Input() fade = true;
 
     alerts: Alert[] = [];
-    alertSubscription: Subscription;
-    routeSubscription: Subscription;
+    alertSubscription: Subscription = new Subscription;
+    routeSubscription: Subscription = new Subscription;
     classeActual: any;
 
   constructor(private router: Router, private alertService: NotificationService) { }
@@ -67,7 +67,7 @@ removeAlert(alert: Alert) {
 
   if (this.fade) {
       // fade out alert
-      this.alerts.find(x => x === alert).fade = true;
+      this.alerts.find(x => x === alert)!.fade = true;
 
       // remove alert after faded out
       setTimeout(() => {

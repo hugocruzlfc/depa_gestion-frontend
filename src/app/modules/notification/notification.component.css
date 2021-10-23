@@ -1,31 +1,32 @@
 .alert{
     border-radius: 28px;
     height: 40px;
-    
+    width: 50%;
+    color: white;
 }
 
 .alert-success, .alert-danger, .alert-info, .alert-warning{
-    background-color: transparent;
+    /* background-color: transparent; */
     padding-top: 7px;
 
 }
 
 
 .alert-success{
-    color: rgb(14, 127, 131);
+    background-color: rgb(14, 127, 131);
     border-color:rgb(14, 127, 131);
 }
 
 .alert-danger{
-    color: rgb(228, 19, 64);
+    background-color: rgb(228, 19, 64);
 }
 
 .alert-info{
-    color: rgb(37, 86, 123);
+    background-color: rgb(37, 86, 123);
 }
 
 .alert-warning{
-    color: rgb(233, 159, 89);
+    background-color: rgb(233, 159, 89);
 }
 
 /* .close{

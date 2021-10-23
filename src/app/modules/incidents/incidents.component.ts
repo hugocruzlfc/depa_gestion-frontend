@@ -9,6 +9,7 @@ import { Incidents } from './../shared/interfaces/incidents.interface';
 import { ComunicationService } from '../shared/services/comunication.service';
 import { BackNotificationsService } from '../shared/services/back-notifications.service';
 import { BackNotification } from '../shared/interfaces/backNotifications.interface';
+import { NotificationService } from '../notification/services/notification.service';
 
 @Component({
   selector: 'app-incidents',
@@ -31,8 +32,12 @@ export class IncidentsComponent implements OnInit {
   private subscription: Subscription | undefined;
   private subscriptionUser: Subscription | undefined;
   currentRole = '';
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
 
-  constructor(private incidentService: IncidentsService, 
+  constructor(private incidentService: IncidentsService, private notificationService: NotificationService,
     private _location: Location, private backNotificationsService: BackNotificationsService,
     private fb: FormBuilder, private inventoryService: InventoryService,
     private comunicationService: ComunicationService) { 
@@ -172,6 +177,7 @@ export class IncidentsComponent implements OnInit {
           incidentId: aux.id
         }
         this.backNotificationsService.createBackNotifications(newBackNotification).subscribe();
+        this.notificationService.success('Incidencia creada correctamente',this.options);
       }).add();
      
    } else { //editar
@@ -179,6 +185,7 @@ export class IncidentsComponent implements OnInit {
     editIncident.id =  this.currentIncident.id;
     editIncident.equipmentId=  this.currentIncident.equipmentId;
     this.incidentService.editIncident(editIncident).subscribe(data=>{this.getIncidents();});
+    this.notificationService.success('Incidencia actualizada correctamente',this.options);
    }
    this.incidentsForm.reset();
   }
@@ -188,6 +195,7 @@ export class IncidentsComponent implements OnInit {
     this.incidentService.toAtention(item).subscribe(data=>{
       this.getIncidents();
       this.backNotificationsService.deleteBackNotifications(incidentId).subscribe();
+      this.notificationService.success('Incidencia atendida correctamente',this.options);
     });
   }
   
@@ -197,6 +205,7 @@ export class IncidentsComponent implements OnInit {
     this.incidentService.deleteIncident(incidentId).subscribe(data=>{
       this.getIncidents();
       this.backNotificationsService.deleteBackNotifications(incidentId).subscribe();
+      this.notificationService.warn('Incidencia eliminada correctamente',this.options);
     });
   }
 

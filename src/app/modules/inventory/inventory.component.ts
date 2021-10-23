@@ -8,6 +8,7 @@ import { Equipment } from '../shared/interfaces/equipment.interface';
 import { Hardware } from './../shared/interfaces/hardware.interface';
 import { InventoryService } from './services/inventory.service';
 import { ComunicationService } from '../shared/services/comunication.service';
+import { NotificationService } from '../notification/services/notification.service';
 declare var $: any;
 
 @Component({
@@ -32,10 +33,13 @@ export class InventoryComponent implements OnInit {
  noSerie:string = '';
  label:string = '';
  name:string = '';
-
-
+ options = {
+  autoClose: true,
+  keepAfterRouteChange: false
+};
 
   constructor(private inventoryService: InventoryService,
+     private notificationService: NotificationService,
     private fb: FormBuilder,private _location: Location,
     private comunicationService: ComunicationService) {
     this.equipmentForm = this.fb.group({
@@ -149,11 +153,17 @@ export class InventoryComponent implements OnInit {
     if (this.actionMode == 1) {
       var newEquipment: Equipment;
       newEquipment = this.equipmentForm.value;
-      this.inventoryService.addNewEquipment(newEquipment,this.arrayHardwares).subscribe(data=>this.getEquipments());
+      this.inventoryService.addNewEquipment(newEquipment,this.arrayHardwares).subscribe(data=>{
+        this.getEquipments();
+        this.notificationService.success('Equipo registrado correctamente',this.options);
+      });
    } else { //editar
     var editEquipment: Equipment = this.equipmentForm.value;
     editEquipment.id =  this.currentEquipment.id;
-    this.inventoryService.editEquipment(editEquipment,this.arrayHardwaresEdit ).subscribe(data=>{this.getEquipments();});
+    this.inventoryService.editEquipment(editEquipment,this.arrayHardwaresEdit ).subscribe(data=>{
+      this.getEquipments();
+      this.notificationService.success('Equipo actualizado correctamente',this.options);
+    });
    }
    this.equipmentForm.reset();
    this.noSerie = '';

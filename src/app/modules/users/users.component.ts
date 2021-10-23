@@ -6,6 +6,7 @@ import {Location} from '@angular/common';
 
 import { User } from './../shared/interfaces/users.interface';
 import { UsersService } from './services/users.service';
+import { NotificationService } from '../notification/services/notification.service';
 
 @Component({
   selector: 'app-users',
@@ -26,8 +27,14 @@ export class UsersComponent implements OnInit {
   private passwordSize = /[a-zA-z0-9]{6,16}/i;
   actionMode: number = 1;
   currenUser: any;
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  }
 
-  constructor(private userService: UsersService,private fb: FormBuilder,private _location: Location) { 
+  constructor(private userService: UsersService,
+    private notificationService: NotificationService,
+    private fb: FormBuilder,private _location: Location) { 
     this.userForm = this.fb.group({
       name: ['', [Validators.required]],
       address: ['', [Validators.required]],
@@ -97,11 +104,17 @@ export class UsersComponent implements OnInit {
      if (this.actionMode == 1) {
         var newUser: User;
         newUser = this.userForm.value;
-        this.userService.addNewUser(newUser).subscribe(data=>{this.getUsers();});
+        this.userService.addNewUser(newUser).subscribe(data=>{
+          this.getUsers();
+          this.notificationService.success('Usuario creado correctamente',this.options);
+        });
      } else { //editar
       var editUser: User = this.userForm.value;
       editUser.id =  this.currenUser.id;
-      this.userService.editUser(editUser).subscribe(data=>{this.getUsers();});
+      this.userService.editUser(editUser).subscribe(data=>{
+        this.getUsers();
+        this.notificationService.success('Usuario actualizado correctamente',this.options);
+      });
      }
      this.userForm.reset();
      
