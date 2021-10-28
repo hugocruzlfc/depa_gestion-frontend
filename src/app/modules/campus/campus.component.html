@@ -1,0 +1,76 @@
+<div class="card border-light mb-3" style="max-width:100%;">
+    <div class="card-body" style="padding-left: 50px; padding-right: 50px;">
+      <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+                <div class="card border-light mb-3" style="max-width: 95%; text-align: center;">
+                  <div class="card-header"><h2 class="card-title">Facultades</h2></div>
+                </div>
+              </div>
+            <table class="table table-hover" datatable [dtOptions]="dtOptions"  
+            [dtTrigger]="dtTrigger" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Sede</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-light" *ngFor="let item of facultys$ |async; let i = index">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{item.name}}</td>
+                    <td>{{item.campus}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm" 
+                       data-bs-target="#modalIncidencias" data-bs-toggle="modal">Añadir</button>
+                        <button type="button" class="btn btn-danger btn-sm" style="margin-left: 5px;"
+                            data-bs-target="#modalIncidencias" data-bs-toggle="modal" >Eliminar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table> 
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+                <div class="card border-light mb-3" style="max-width: 95%; text-align: center;">
+                  <div class="card-header"><h2 class="card-title">Departamentos</h2></div>
+                </div>
+              </div>
+            <table class="table table-hover" datatable [dtOptions]="dtOptions"  
+            [dtTrigger]="dtTrigger" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Nombre</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-light" *ngFor="let item of sections$ |async; let i = index">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{item.name}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm" 
+                       data-bs-target="#modalIncidencias" data-bs-toggle="modal">Añadir</button>
+                        <button type="button" class="btn btn-danger btn-sm" style="margin-left: 5px;"
+                            data-bs-target="#modalIncidencias" data-bs-toggle="modal" >Eliminar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table> 
+          </div>
+      </div>
+
+        <div class="row"  style="text-align: center;">
+            <div class="col-md-12">
+                <i class="fa fa-arrow-left fa-2x"  style="cursor: pointer; text-align: center;margin-top: 10px" 
+                (click)="backClicked()"
+                data-bs-toggle="tooltip" data-bs-placement="right" title="Volver"></i>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

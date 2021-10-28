@@ -41,8 +41,8 @@
                     <th scope="row">{{i+1}}</th>
                     <td>{{item.name}}</td>
                     <td>{{item.role}}</td>
-                    <td>{{item.section}}</td>
-                    <td>{{item.faculty}}</td>
+                    <td>{{item.sections!.name}}</td>
+                    <td>{{item.facultys!.name}}</td>
                     <td>
                         <button type="button" class="btn btn-info btn-sm"  data-bs-target="#modalUsers" data-bs-toggle="modal"
                         style="margin-right: 10px;" (click)=" modalMode(2, item)">Detalles</button>
@@ -68,9 +68,9 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" 
+          <h4 class="modal-title" 
           [ngClass]="{'text-primary': modalTitle=='Añadir Usuario','text-info': modalTitle=='Detalles del Usuario', 'text-success': modalTitle=='Editar Usuario' }"
-          >{{modalTitle}}</h5>
+          >{{modalTitle}}</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true"></span>
           </button>
@@ -141,39 +141,74 @@
                       </div>
                       <div class="row">
                         <div class="col-md-6">
-                          <div class="form-floating">
-                            <ng-container *ngIf="actionMode !=3">
-                            <input type="text" class="form-control" id="faculty" name="faculty" 
-                            formControlName="faculty" autocomplete="off"  placeholder="Facultad">
+                          <div class="form-control">
+                            <ng-container *ngIf="actionMode == 1">
+                              <label for="faculty" >Facultad</label>
+                              <select   class="form-select" id="faculty" name="faculty" formControlName="faculty">
+                                <option  value="">--Seleccione--</option>
+                                <option [value]="item.id" *ngFor="let item of facultys$ | async" >
+                                  {{item.name}}
+                                  </option>
+                              </select>
+                          </ng-container>
+                            <ng-container *ngIf="actionMode == 2">
+                              <label for="faculty" >Facultad</label>
+                              <select   class="form-select" id="faculty" name="faculty" formControlName="faculty"
+                              [(ngModel)]='facultySelect'>
+                                <option  value="" disabled>--Seleccione--</option>
+                                <option [value]="item.id" *ngFor="let item of facultys$ | async" >
+                                  {{item.name}}
+                                  </option>
+                              </select>
                           </ng-container>
                             <ng-container *ngIf="actionMode ==3">
+                              <div class="form-floating">
                             <input type="text" class="form-control" id="faculty" name="faculty"  readonly=""
                             formControlName="faculty" autocomplete="off"  placeholder="Facultad">
-                          </ng-container>
                             <label for="faculty" >Facultad</label>
+                          </div>
+                        </ng-container>
                           </div>
                         </div>
                         <div class="col-md-6">
-                          <div class="form-floating">
-                            <ng-container *ngIf="actionMode !=3">
-                            <input type="text" class="form-control" id="section" name="section"  
-                            formControlName="section" autocomplete="off"  placeholder="Departamento">
+                          <div class="form-control">
+                            <ng-container *ngIf="actionMode ==1">
+                              <label for="section" >Departamento</label>
+                              <select   class="form-select" id="section" name="section" formControlName="section">
+                                <option  value="">--Seleccione--</option>
+                                <option [value]="item.id" *ngFor="let item of sections$ | async" >
+                                  {{item.name}}
+                                  </option>
+                              </select>
                           </ng-container>
+                            <ng-container *ngIf="actionMode ==2">
+                              <label for="section" >Departamento</label>
+                              <select   class="form-select" id="section" name="section" formControlName="section"
+                              [(ngModel)]='sectionSelect'>
+                               <option  value="" disabled>--Seleccione--</option>
+                                <option [value]="item.id" *ngFor="let item of sections$ | async" >
+                                  {{item.name}}
+                                  </option>
+                              </select>
+                          </ng-container>
+
                             <ng-container *ngIf="actionMode ==3">
-                            <input type="text" class="form-control" id="section" name="section"   readonly=""
-                            formControlName="section" autocomplete="off"  placeholder="Departamento">
+                              <div class="form-floating">
+                              <input type="text" class="form-control" id="section" name="section"   readonly=""
+                              formControlName="section" autocomplete="off"  placeholder="Departamento">
+                              <label for="section" >Departamento</label>
+                             </div>
                           </ng-container>
-                            <label for="section" >Departamento</label>
-                          </div>
+                           
+                        </div>
                         </div>
                       </div>
                       
                       <div class="form-control">
-                        
                         <ng-container *ngIf="actionMode !=3">
                           <label for="role" >Rol</label>
-                        <select   class="form-select" id="role" name="role" formControlName="role">
-                          <option  value="">--Seleccione--</option>
+                        <select   class="form-select" id="role" name="role" formControlName="role" >
+                          <option  value="" disabled >--Seleccione--</option>
                           <option value="Administrador">Administrador</option>
                           <option value="Técnico">Técnico</option>
                           <option value="Usuario">Usuario</option>

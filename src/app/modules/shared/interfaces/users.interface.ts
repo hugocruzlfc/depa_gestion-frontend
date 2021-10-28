@@ -1,12 +1,21 @@
 export interface User {
-    id?: string;
+    id?: number;
     name: string;
     email: string;
     celular: number;
     dni: number;
-    section: string;
+    sectionId: string;
     password: string;
     role: string;
-    faculty: string;
+    facultyId: string;
     address: string;
+    sections?: {
+        id: number;
+        name: string;
+    };
+    facultys?: {
+        id: number;
+        name: string;
+        campus: string
+    };
 }

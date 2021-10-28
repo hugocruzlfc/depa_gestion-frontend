@@ -5,8 +5,11 @@ import {  FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {Location} from '@angular/common';
 
 import { User } from './../shared/interfaces/users.interface';
+import { Faculty } from './../shared/interfaces/facultys.interface';
+import { Section } from './../shared/interfaces/sections.interface';
 import { UsersService } from './services/users.service';
 import { NotificationService } from '../notification/services/notification.service';
+import { CampusService } from "../campus/services/campus.service";
 
 @Component({
   selector: 'app-users',
@@ -31,8 +34,14 @@ export class UsersComponent implements OnInit {
     autoClose: true,
     keepAfterRouteChange: false
   }
+  // sections = Array<Section>();
+  // facultys= Array<Faculty>();
+  sections$ = this.campusService.sections;
+  facultys$ = this.campusService.facultys;
+  sectionSelect: any;
+  facultySelect: any;
 
-  constructor(private userService: UsersService,
+  constructor(private userService: UsersService,private campusService: CampusService,
     private notificationService: NotificationService,
     private fb: FormBuilder,private _location: Location) { 
     this.userForm = this.fb.group({
@@ -48,7 +57,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -127,8 +136,8 @@ export class UsersComponent implements OnInit {
     'dni':  item.dni,
     'celular':  item.celular,
     'role': item.role,
-    'faculty': item.faculty,
-    'section': item.section,
+    'faculty': item.facultys?.name,
+    'section': item.sections?.name,
     'email': item.email,
     'password': item.password
     })
@@ -156,6 +165,8 @@ export class UsersComponent implements OnInit {
         this.actionMode = 2
         this.modalButtom = 'Editar'
         this.currenUser = item;
+        this.facultySelect = this.currenUser.facultys.id;
+        this.sectionSelect = this.currenUser.sections.id;
         this.showUser(this.currenUser)
        break;
       }
@@ -166,5 +177,14 @@ export class UsersComponent implements OnInit {
   backClicked() {
     this._location.back();
   }
+
+  // getCampus(){
+  //     let sections$ = this.campusService.sections;
+  //     let facultys$ = this.campusService.facultys;
+  //     sections$.subscribe(element => {
+  //     this.sections = element
+  //   });
+  // }
+
 
 }
