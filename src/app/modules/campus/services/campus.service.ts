@@ -29,12 +29,12 @@ export class CampusService {
   }
 
   
-  editIncident(editFaculty: Faculty){
+  editFaculty(editFaculty: Faculty){
     let id = editFaculty.id;
     return this.httpClient.put(`${this.apiUrl}/facultys/update/${id}`, editFaculty)
   }
 
-  deleteIncident(id: number){
+  deleteFaculty(id: number){
     return this.httpClient.delete(`${this.apiUrl}/facultys/delete/${id}`)
   }
 

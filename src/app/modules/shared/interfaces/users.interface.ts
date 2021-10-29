@@ -4,10 +4,10 @@ export interface User {
     email: string;
     celular: number;
     dni: number;
-    sectionId: string;
+    sectionId: number;
     password: string;
     role: string;
-    facultyId: string;
+    facultyId: number;
     address: string;
     sections?: {
         id: number;

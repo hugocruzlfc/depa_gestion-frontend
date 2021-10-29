@@ -39,7 +39,8 @@ export class UsersComponent implements OnInit {
   sections$ = this.campusService.sections;
   facultys$ = this.campusService.facultys;
   sectionSelect: any;
-  facultySelect: any;
+  facultySelect: any
+  rollSelect: any
 
   constructor(private userService: UsersService,private campusService: CampusService,
     private notificationService: NotificationService,
@@ -50,8 +51,8 @@ export class UsersComponent implements OnInit {
       dni: [null, [Validators.required]],
       celular: [null, [Validators.required]],
       role: ['', [Validators.required]],
-      faculty: ['', [Validators.required]],
-      section: ['', [Validators.required]],
+      facultyId: [null, [Validators.required]],
+      sectionId: [null, [Validators.required]],
       email: ['', [Validators.required, Validators.pattern(this.isEmail)]],
       password: ['', [Validators.required, Validators.pattern(this.passwordSize)]],
     });
@@ -120,6 +121,8 @@ export class UsersComponent implements OnInit {
      } else { //editar
       var editUser: User = this.userForm.value;
       editUser.id =  this.currenUser.id;
+      editUser.facultyId = +this.userForm.value.facultyId;
+      editUser.sectionId = +this.userForm.value.sectionId;
       this.userService.editUser(editUser).subscribe(data=>{
         this.getUsers();
         this.notificationService.success('Usuario actualizado correctamente',this.options);
@@ -136,8 +139,8 @@ export class UsersComponent implements OnInit {
     'dni':  item.dni,
     'celular':  item.celular,
     'role': item.role,
-    'faculty': item.facultys?.name,
-    'section': item.sections?.name,
+    'facultyId': item.facultys?.name,
+    'sectionId': item.sections?.name,
     'email': item.email,
     'password': item.password
     })
@@ -150,7 +153,9 @@ export class UsersComponent implements OnInit {
         this.modalTitle = 'Añadir Usuario';
         this.actionMode = 1;
         this.modalButtom = 'Añadir';
-       
+        this.facultySelect = "";
+        this.sectionSelect = "";
+        this.rollSelect = "";
        break;
       }
       case 2:{
@@ -165,8 +170,8 @@ export class UsersComponent implements OnInit {
         this.actionMode = 2
         this.modalButtom = 'Editar'
         this.currenUser = item;
-        this.facultySelect = this.currenUser.facultys.id;
-        this.sectionSelect = this.currenUser.sections.id;
+        this.facultySelect = this.currenUser.facultys ? this.currenUser.facultys.id : "";
+        this.sectionSelect = this.currenUser.sections ? this.currenUser.sections.id : "";
         this.showUser(this.currenUser)
        break;
       }
