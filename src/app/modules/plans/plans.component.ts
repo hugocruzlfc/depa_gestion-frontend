@@ -10,6 +10,7 @@ import { InventoryService } from './../inventory/services/inventory.service';
 import { Plans } from './../shared/interfaces/plans.interface';
 import { PlansService } from './services/plans.service';
 import { NotificationService } from '../notification/services/notification.service';
+import { CampusService } from "../campus/services/campus.service";
 
 @Component({
   selector: 'app-plans',
@@ -29,7 +30,6 @@ export class PlansComponent implements OnInit {
   arrayEquipments = this.inventoryService.equipments;
   attended = false;
   datePlanImpres: any;
-  equipmentPlanImpres: string = '';
   sectionPlanImpres: string = '';
   facultyPlanImpres: string = '';
   descriptionPlanImpress: string = '';
@@ -37,16 +37,19 @@ export class PlansComponent implements OnInit {
     autoClose: true,
     keepAfterRouteChange: false
   };
+  sections$ = this.campusService.sections;
+  facultys$ = this.campusService.facultys;
+  sectionSelect: any;
+  facultySelect: any
 
-  constructor(private plansService: PlansService, private _location: Location,
+  constructor(private plansService: PlansService, private _location: Location,private campusService: CampusService,
     private notificationService: NotificationService,
     private fb: FormBuilder,  private inventoryService: InventoryService) { 
     this.plansForm = this.fb.group({
-      faculty: ['', [Validators.required]],
-      section: ['', [Validators.required]],
+      facultyId: [null, [Validators.required]],
+      sectionId: [null, [Validators.required]],
        description: ['', [Validators.required]],
-       starDate: ['', [Validators.required]],
-      equipmentId: [0, [Validators.required]]
+       starDate: ['', [Validators.required]]
     });
   }
 
@@ -120,9 +123,8 @@ export class PlansComponent implements OnInit {
         this.currentPlan = item;
         this.showPlan(this.currentPlan);
         this.datePlanImpres = item.starDate;
-         this.equipmentPlanImpres = item.equipments.name
-        this.sectionPlanImpres = item.section;
-        this.facultyPlanImpres = item.faculty;
+        this.sectionPlanImpres = item.sections.name;
+        this.facultyPlanImpres = item.facultys.name;
         this.descriptionPlanImpress = item.description;
        break;
       }
@@ -131,6 +133,8 @@ export class PlansComponent implements OnInit {
         this.actionMode = 2
         this.modalButtom = 'Editar'
         this.currentPlan = item;
+        this.facultySelect = this.currentPlan.facultys ? this.currentPlan.facultys.id : "";
+        this.sectionSelect = this.currentPlan.sections ? this.currentPlan.sections.id : "";
         this.showPlan(this.currentPlan)
        break;
       }
@@ -140,10 +144,9 @@ export class PlansComponent implements OnInit {
   showPlan(item: any){
     this.plansForm.patchValue({
       'starDate': item.starDate,
-      'equipmentId': item.equipments.name,
       'description': item.description,
-      'faculty': item.equipments.faculty,
-      'section': item.equipments.section,
+      'facultyId': item.facultys?.name,
+       'sectionId': item.sections?.name,
       });
       if (item.done == 'Si') {
         this.attended = true
@@ -156,9 +159,8 @@ export class PlansComponent implements OnInit {
     if (this.actionMode == 1) {
       var newPlan: Plans;
       newPlan = this.plansForm.value;
-      console.log(newPlan);
-      console.log(this.plansForm.value);
-
+      newPlan.facultyId = +this.plansForm.value.facultyId;
+      newPlan.sectionId = +this.plansForm.value.sectionId;
     this.plansService.addNewPlan(newPlan,).subscribe(data=>{
       this.getPlans();
       this.notificationService.success('Plan creado correctamente',this.options);
@@ -166,7 +168,8 @@ export class PlansComponent implements OnInit {
    } else { //editar
     var editPlan: Plans = this.plansForm.value;
     editPlan.id =  this.currentPlan.id;
-    editPlan.equipmentId=  this.currentPlan.equipmentId;
+    editPlan.facultyId = +this.plansForm.value.facultyId;
+    editPlan.sectionId = +this.plansForm.value.sectionId;
     this.plansService.editPlan(editPlan).subscribe(data=>{
       this.getPlans();
       this.notificationService.success('Plan actualizado correctamente',this.options);

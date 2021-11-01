@@ -28,6 +28,13 @@ export class AdminComponent implements OnInit {
          }
       }
     });
+    this.allPlans$.subscribe( element =>{
+      for( let plan of element){
+        if (plan.done ==='No') {
+         this.cantPlans ++;
+        }
+     }
+    });
   }
 
   ngOnInit(): void {
