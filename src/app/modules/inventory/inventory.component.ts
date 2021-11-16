@@ -9,6 +9,7 @@ import { Hardware } from './../shared/interfaces/hardware.interface';
 import { InventoryService } from './services/inventory.service';
 import { ComunicationService } from '../shared/services/comunication.service';
 import { NotificationService } from '../notification/services/notification.service';
+import { CampusService } from "../campus/services/campus.service";
 declare var $: any;
 
 @Component({
@@ -37,15 +38,20 @@ export class InventoryComponent implements OnInit {
   autoClose: true,
   keepAfterRouteChange: false
 };
+sections$ = this.campusService.sections;
+  facultys$ = this.campusService.facultys;
+  sectionSelect: any;
+  facultySelect: any;
+  fieldHardwaresValidators: any;
 
-  constructor(private inventoryService: InventoryService,
+  constructor(private inventoryService: InventoryService,private campusService: CampusService,
      private notificationService: NotificationService,
     private fb: FormBuilder,private _location: Location,
     private comunicationService: ComunicationService) {
     this.equipmentForm = this.fb.group({
       name: ['', [Validators.required]],
-      faculty: ['', [Validators.required]],
-      section: ['', [Validators.required]]
+      facultyId: [null, [Validators.required]],
+      sectionId: [null, [Validators.required]],
     });
     this.hardwareForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -124,12 +130,17 @@ export class InventoryComponent implements OnInit {
     this.equipmentForm.reset();
     this.arrayHardwares = [];
     this.arrayHardwaresEdit = [];
+    this.fieldHardwaresValidators = 0;
     switch(mode){
       case 1:{
         this.modalTitle = 'Añadir Equipo';
         this.actionMode = 1;
         this.modalButtom = 'Añadir';
-       
+        this.facultySelect = "";
+        this.sectionSelect = "";
+        this.noSerie = '';
+        this.label = '';
+        this.name = '';
        break;
       }
       case 2:{
@@ -144,6 +155,8 @@ export class InventoryComponent implements OnInit {
         this.actionMode = 2
         this.modalButtom = 'Editar'
         this.currentEquipment = item;
+        this.facultySelect = this.currentEquipment.facultys ? this.currentEquipment.facultys.id : "";
+        this.sectionSelect = this.currentEquipment.sections ? this.currentEquipment.sections.id : "";
         this.showEquipment(this.currentEquipment)
        break;
       }
@@ -160,6 +173,8 @@ export class InventoryComponent implements OnInit {
    } else { //editar
     var editEquipment: Equipment = this.equipmentForm.value;
     editEquipment.id =  this.currentEquipment.id;
+    editEquipment.facultyId = +this.equipmentForm.value.facultyId;
+    editEquipment.sectionId = +this.equipmentForm.value.sectionId;
     this.inventoryService.editEquipment(editEquipment,this.arrayHardwaresEdit ).subscribe(data=>{
       this.getEquipments();
       this.notificationService.success('Equipo actualizado correctamente',this.options);
@@ -175,6 +190,7 @@ export class InventoryComponent implements OnInit {
 
   addHardwares(){
     if (this.noSerie !='' && this.label != '' && this.name != '') {
+      this.fieldHardwaresValidators = 1; 
       let newHardware: Hardware ={
         noSerie: this.noSerie,
         label: this.label,
@@ -187,6 +203,9 @@ export class InventoryComponent implements OnInit {
        this.noSerie = '';
        this.label = '';
        this.name = '';
+    }else{
+     this.fieldHardwaresValidators = 2; 
+     console.log(this.fieldHardwaresValidators);
     }
    
   }

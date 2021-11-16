@@ -28,6 +28,8 @@ export class UsersComponent implements OnInit {
   userForm: FormGroup;
   private isEmail = /\S+@\S+\.\S+/;
   private passwordSize = /[a-zA-z0-9]{6,16}/i;
+  private celularLenght = /^([0-9]){8,8}$/;
+  private dniLenght = /^([0-9]){11,11}$/;
   actionMode: number = 1;
   currenUser: any;
   options = {
@@ -48,8 +50,8 @@ export class UsersComponent implements OnInit {
     this.userForm = this.fb.group({
       name: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      dni: [null, [Validators.required]],
-      celular: [null, [Validators.required]],
+      dni: [null, [Validators.required, Validators.pattern(this.dniLenght)]],
+      celular: [null, [Validators.required, Validators.pattern(this.celularLenght)]],
       role: ['', [Validators.required]],
       facultyId: [null, [Validators.required]],
       sectionId: [null, [Validators.required]],

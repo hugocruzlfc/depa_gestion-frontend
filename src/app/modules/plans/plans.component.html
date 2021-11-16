@@ -87,8 +87,24 @@
                             <div class="col-md-12" style="text-align: right; margin-left: 47%;">
                               <div class="form-floating">
                                   <ng-container *ngIf="actionMode !=3">
-                                  <input type="date" class="form-control" id="starDate" name="starDate"  
+                                  <input [ngClass]="{
+                                    'is-invalid':
+                                    plansForm.get('starDate')?.errors &&
+                                    plansForm.get('starDate')?.touched,
+                                    'is-valid':
+                                    plansForm.get('starDate')?.touched &&
+                                    plansForm.get('starDate')?.valid
+                                }"
+                                  type="date" class="form-control" id="starDate" name="starDate"  
                                   formControlName="starDate" placeholder="Fecha Inicio" style="width: 50%;">
+                                  <div class="invalid-feedback colorMessageErrors text-center" 
+                                  style="padding-right: 15em;"    *ngIf="
+                                  plansForm.get('starDate')?.hasError('required') &&
+                                  plansForm.get('starDate')?.touched
+                            "
+                            >
+                            Campo requerido
+                        </div>
                                 </ng-container>
                                   <ng-container *ngIf="actionMode ==3">
                                   <input  type="date" class="form-control" id="starDate" name="starDate" style="width: 50%;"
@@ -102,9 +118,24 @@
                             <div class="col-md-12">
                                 <div class="form-floating">
                                     <ng-container *ngIf="actionMode!=3">
-                                      <input type="text" class="form-control" id="description" name="description" 
+                                      <input [ngClass]="{
+                                        'is-invalid':
+                                        plansForm.get('description')?.errors &&
+                                        plansForm.get('description')?.touched,
+                                        'is-valid':
+                                        plansForm.get('description')?.touched &&
+                                        plansForm.get('description')?.valid
+                                    }"
+                                      type="text" class="form-control" id="description" name="description" 
                                       placeholder="Descripción"
                                       formControlName="description" autocomplete="off">
+                                      <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                                  plansForm.get('description')?.hasError('required') &&
+                                  plansForm.get('description')?.touched
+                            "
+                            >
+                            Campo requerido
+                        </div>
                                     </ng-container>
                                     <ng-container *ngIf="actionMode==3">
                                       <input startDate="text" class="form-control" id="description" name="description" 
@@ -120,23 +151,53 @@
                           <div class="form-control">
                             <ng-container *ngIf="actionMode == 1">
                               <label for="facultyId" >Facultad</label>
-                              <select   class="form-select" id="facultyId" name="facultyId" formControlName="facultyId" 
+                              <select   [ngClass]="{
+                                'is-invalid':
+                                plansForm.get('facultyId')?.errors &&
+                                plansForm.get('facultyId')?.touched,
+                                'is-valid':
+                                plansForm.get('facultyId')?.touched &&
+                                plansForm.get('facultyId')?.valid
+                            }"
+                              class="form-select" id="facultyId" name="facultyId" formControlName="facultyId" 
                               [(ngModel)]='facultySelect'>
                                 <option  value="" disabled>--Seleccione--</option>
                                 <option [value] = "item.id" *ngFor="let item of facultys$ | async" >
                                   {{item.name}}
                                   </option>
                               </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              plansForm.get('facultyId')?.hasError('required') &&
+                              plansForm.get('facultyId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
                           </ng-container>
                             <ng-container *ngIf="actionMode == 2">
                               <label for="facultyId" >Facultad</label>
-                              <select   class="form-select" id="facultyId" name="facultyId" formControlName="facultyId"
+                              <select  [ngClass]="{
+                                'is-invalid':
+                                plansForm.get('facultyId')?.errors &&
+                                plansForm.get('facultyId')?.touched,
+                                'is-valid':
+                                plansForm.get('facultyId')?.touched &&
+                                plansForm.get('facultyId')?.valid
+                            }"
+                               class="form-select" id="facultyId" name="facultyId" formControlName="facultyId"
                               [(ngModel)]='facultySelect'>
                                 <option  value="" disabled>--Seleccione--</option>
                                 <option [value]= "item.id" *ngFor="let item of facultys$ | async" >
                                   {{item.name}}
                                   </option>
                               </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              plansForm.get('facultyId')?.hasError('required') &&
+                              plansForm.get('facultyId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
                           </ng-container>
                         </div>
                             <ng-container *ngIf="actionMode ==3">
@@ -152,23 +213,53 @@
                           <div class="form-control">
                             <ng-container *ngIf="actionMode ==1">
                               <label for="sectionId" >Departamento</label>
-                              <select   class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
+                              <select   [ngClass]="{
+                                'is-invalid':
+                                plansForm.get('sectionId')?.errors &&
+                                plansForm.get('sectionId')?.touched,
+                                'is-valid':
+                                plansForm.get('sectionId')?.touched &&
+                                plansForm.get('sectionId')?.valid
+                            }"
+                               class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
                               [(ngModel)]='sectionSelect'>
                                 <option  value="">--Seleccione--</option>
                                 <option [value]="item.id" *ngFor="let item of sections$ | async" >
                                   {{item.name}}
                                   </option>
                               </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              plansForm.get('sectionId')?.hasError('required') &&
+                              plansForm.get('sectionId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
                           </ng-container>
                             <ng-container *ngIf="actionMode ==2">
                               <label for="sectionId" >Departamento</label>
-                              <select   class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
+                              <select   
+                              [ngClass]="{
+                                'is-invalid':
+                                plansForm.get('sectionId')?.errors &&
+                                plansForm.get('sectionId')?.touched,
+                                'is-valid':
+                                plansForm.get('sectionId')?.touched &&
+                                plansForm.get('sectionId')?.valid
+                            }"class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
                               [(ngModel)]='sectionSelect'>
                                <option  value="" disabled>--Seleccione--</option>
                                 <option [value]="item.id" *ngFor="let item of sections$ | async" >
                                   {{item.name}}
                                   </option>
                               </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              plansForm.get('sectionId')?.hasError('required') &&
+                              plansForm.get('sectionId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
                           </ng-container>
                         </div>
                             <ng-container *ngIf="actionMode ==3">

@@ -93,9 +93,24 @@
                             <div class="col-md-12">
                                 <div class="form-floating">
                                     <ng-container *ngIf="actionMode!=3">
-                                      <input type="text" class="form-control" id="issue" name="issue" 
+                                      <input [ngClass]="{
+                                        'is-invalid':
+                                        incidentsForm.get('issue')?.errors &&
+                                        incidentsForm.get('issue')?.touched,
+                                        'is-valid':
+                                        incidentsForm.get('issue')?.touched &&
+                                        incidentsForm.get('issue')?.valid
+                                    }"
+                                      type="text" class="form-control" id="issue" name="issue" 
                                       placeholder="Asunto"
                                       formControlName="issue" autocomplete="off">
+                                      <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                                      incidentsForm.get('issue')?.hasError('required') &&
+                                      incidentsForm.get('issue')?.touched
+                                  "
+                                  >
+                                  Campo requerido
+                              </div>
                                     </ng-container>
                                     <ng-container *ngIf="actionMode==3">
                                       <input type="text" class="form-control" id="issue" name="issue" 
@@ -110,7 +125,15 @@
                             <div class="col-md-12">
                                 <div class="form-floating">
                                     <ng-container *ngIf="actionMode!=3">
-                                      <input type="text" class="form-control" id="description" name="description" 
+                                      <input [ngClass]="{
+                                        'is-invalid':
+                                        incidentsForm.get('description')?.errors &&
+                                        incidentsForm.get('description')?.touched,
+                                        'is-valid':
+                                        incidentsForm.get('description')?.touched &&
+                                        incidentsForm.get('description')?.valid
+                                    }"
+                                      type="text" class="form-control" id="description" name="description" 
                                       placeholder="Descripción"
                                       formControlName="description" autocomplete="off">
                                     </ng-container>
@@ -118,6 +141,13 @@
                                       <input type="text" class="form-control" id="description" name="description" 
                                       placeholder="Descripción" readonly=""
                                       formControlName="description" autocomplete="off">
+                                      <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                                      incidentsForm.get('description')?.hasError('required') &&
+                                      incidentsForm.get('description')?.touched
+                                  "
+                                  >
+                                  Campo requerido
+                              </div>
                                     </ng-container>
                                     <label for="name" >Descripción</label>
                                   </div>
@@ -130,11 +160,26 @@
                             <div class="form-control">
                                 <ng-container *ngIf="actionMode !=3">
                                   <label for="type" >Tipo</label>
-                                <select   class="form-select" id="type" name="type" formControlName="type">
+                                <select   [ngClass]="{
+                                  'is-invalid':
+                                  incidentsForm.get('type')?.errors &&
+                                  incidentsForm.get('type')?.touched,
+                                  'is-valid':
+                                  incidentsForm.get('type')?.touched &&
+                                  incidentsForm.get('type')?.valid
+                              }"
+                                class="form-select" id="type" name="type" formControlName="type">
                                   <option  value="">--Seleccione--</option>
                                   <option value="Hardware">Hardware</option>
                                   <option value="Software">Software</option>
                                 </select>
+                                <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                                      incidentsForm.get('type')?.hasError('required') &&
+                                      incidentsForm.get('type')?.touched
+                                  "
+                                  >
+                                  Campo requerido
+                              </div>
                               </ng-container>
                                 <ng-container *ngIf="actionMode ==3">
                                   <div class="form-floating">
@@ -149,17 +194,47 @@
                             <div class="form-control">
                                 <ng-container *ngIf="actionMode ==1">
                                   <label for="equipmentId" >Equipo</label>
-                                <select   class="form-select" id="equipmentId" name="equipmentId" formControlName="equipmentId"> 
+                                <select   [ngClass]="{
+                                  'is-invalid':
+                                  incidentsForm.get('equipmentId')?.errors &&
+                                  incidentsForm.get('equipmentId')?.touched,
+                                  'is-valid':
+                                  incidentsForm.get('equipmentId')?.touched &&
+                                  incidentsForm.get('equipmentId')?.valid
+                              }"
+                                class="form-select" id="equipmentId" name="equipmentId" formControlName="equipmentId"> 
                                   <option >--Seleccione--</option>
                                   <option [value]= "item.id"  *ngFor="let item of arrayEquipments | async"> 
                                          {{item.name}}
                                   </option>
                                 </select>
+                                <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                                      incidentsForm.get('equipmentId')?.hasError('required') &&
+                                      incidentsForm.get('equipmentId')?.touched
+                                  "
+                                  >
+                                  Campo requerido
+                              </div>
                               </ng-container>
                                 <ng-container *ngIf="actionMode !=1">
                                   <div class="form-floating">
-                                <input  type="text" class="form-control" id="equipmentId" name="equipmentId" 
+                                <input  [ngClass]="{
+                                  'is-invalid':
+                                  incidentsForm.get('equipmentId')?.errors &&
+                                  incidentsForm.get('equipmentId')?.touched,
+                                  'is-valid':
+                                  incidentsForm.get('equipmentId')?.touched &&
+                                  incidentsForm.get('equipmentId')?.valid
+                              }"
+                                type="text" class="form-control" id="equipmentId" name="equipmentId" 
                                 formControlName="equipmentId"  readonly="">
+                                <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                                      incidentsForm.get('equipmentId')?.hasError('required') &&
+                                      incidentsForm.get('equipmentId')?.touched
+                                  "
+                                  >
+                                  Campo requerido
+                              </div>
                                 <label for="equipmentId" >Equipo</label>
                                   </div>
                               </ng-container>

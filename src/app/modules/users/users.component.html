@@ -85,14 +85,31 @@
                     <fieldset>
                       <div class="form-floating">
                         <ng-container *ngIf="actionMode!=3">
-                          <input type="text" class="form-control" id="name" name="name" 
+                          <input [ngClass]="{
+                            'is-invalid':
+                            userForm.get('name')?.errors &&
+                            userForm.get('name')?.touched,
+                            'is-valid':
+                            userForm.get('name')?.touched &&
+                            userForm.get('name')?.valid
+                        }" 
+                          type="text" class="form-control" id="name" name="name" 
                           placeholder="Nombre y Apellidos"
                           formControlName="name" autocomplete="off">
+                          <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                          userForm.get('name')?.hasError('required') &&
+                          userForm.get('name')?.touched
+                      "
+                      >
+                      Campo requerido
+                  </div>
                         </ng-container>
                         <ng-container *ngIf="actionMode==3">
-                          <input type="text" class="form-control" id="name" name="name" 
+                          <input 
+                          type="text" class="form-control" id="name" name="name" 
                           placeholder="Nombre y Apellidos" readonly=""
                           formControlName="name" autocomplete="off">
+
                         </ng-container>
                         <label for="name" >Nombre</label>
                       </div>
@@ -103,9 +120,24 @@
                         formControlName="address" autocomplete="off">
                         </ng-container>
                         <ng-container *ngIf="actionMode==3">
-                        <input type="text" class="form-control" id="address" name="address" 
+                        <input [ngClass]="{
+                          'is-invalid':
+                          userForm.get('address')?.errors &&
+                          userForm.get('address')?.touched,
+                          'is-valid':
+                          userForm.get('address')?.touched &&
+                          userForm.get('address')?.valid
+                      }" 
+                        type="text" class="form-control" id="address" name="address" 
                         placeholder="Dirección Particular" readonly=""
                         formControlName="address" autocomplete="off">
+                        <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                          userForm.get('address')?.hasError('required') &&
+                          userForm.get('address')?.touched
+                      "
+                      >
+                      Campo requerido
+                  </div>
                         </ng-container>
                         <label for="address" >Dirección</label>
                       </div>
@@ -113,8 +145,30 @@
                         <div class="col-md-6">
                           <div class="form-floating">
                             <ng-container *ngIf="actionMode !=3">
-                            <input type="number" class="form-control" id="dni" name="dni" 
+                            <input [ngClass]="{
+                              'is-invalid':
+                              userForm.get('dni')?.errors &&
+                              userForm.get('dni')?.touched,
+                              'is-valid':
+                              userForm.get('dni')?.touched &&
+                              userForm.get('dni')?.valid
+                          }"
+                            type="number" class="form-control" id="dni" name="dni" 
                             formControlName="dni"  placeholder="11111111111">
+                            <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                          userForm.get('dni')?.hasError('required') &&
+                          userForm.get('dni')?.touched
+                      "
+                      >
+                      Campo requerido
+                  </div>
+                  <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                   ( userForm.get('dni')?.hasError('pattern') &&
+                    userForm.get('dni')?.touched )
+                      "
+                      >
+                      El número de CI tiene 11 digitos
+                  </div>
                           </ng-container>
                             <ng-container *ngIf="actionMode==3">
                             <input type="number" class="form-control" id="dni" name="dni"  readonly=""
@@ -126,9 +180,31 @@
                         <div class="col-md-6">
                           <div class="form-floating">
                             <ng-container *ngIf="actionMode !=3">
-                            <input type="number" class="form-control" id="celular" name="celular" 
+                            <input [ngClass]="{
+                              'is-invalid':
+                              userForm.get('celular')?.errors &&
+                              userForm.get('celular')?.touched,
+                              'is-valid':
+                              userForm.get('celular')?.touched &&
+                              userForm.get('celular')?.valid
+                          }"
+                            type="number" class="form-control" id="celular" name="celular" 
                             placeholder="55555555"
                             formControlName="celular" autocomplete="off">
+                            <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                            userForm.get('celular')?.hasError('required') &&
+                            userForm.get('celular')?.touched
+                        "
+                        >
+                        Campo requerido
+                    </div>
+                    <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                   ( userForm.get('celular')?.hasError('pattern') &&
+                    userForm.get('celular')?.touched )
+                      "
+                      >
+                      El número de celular tiene 8 digitos
+                  </div>
                           </ng-container>
                           <ng-container *ngIf="actionMode ==3">
                             <input type="number" class="form-control" id="celular" name="celular" 
@@ -144,23 +220,53 @@
                           <div class="form-control">
                             <ng-container *ngIf="actionMode == 1">
                               <label for="facultyId" >Facultad</label>
-                              <select   class="form-select" id="facultyId" name="facultyId" formControlName="facultyId" 
+                              <select  [ngClass]="{
+                                'is-invalid':
+                                userForm.get('facultyId')?.errors &&
+                                userForm.get('facultyId')?.touched,
+                                'is-valid':
+                                userForm.get('facultyId')?.touched &&
+                                userForm.get('facultyId')?.valid
+                            }"
+                               class="form-select" id="facultyId" name="facultyId" formControlName="facultyId" 
                               [(ngModel)]='facultySelect'>
                                 <option  value="" disabled>--Seleccione--</option>
                                 <option [value] = "item.id" *ngFor="let item of facultys$ | async" >
                                   {{item.name}}
                                   </option>
                               </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              userForm.get('facultyId')?.hasError('required') &&
+                              userForm.get('facultyId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
                           </ng-container>
                             <ng-container *ngIf="actionMode == 2">
                               <label for="facultyId" >Facultad</label>
-                              <select   class="form-select" id="facultyId" name="facultyId" formControlName="facultyId"
+                              <select  [ngClass]="{
+                                'is-invalid':
+                                userForm.get('facultyId')?.errors &&
+                                userForm.get('facultyId')?.touched,
+                                'is-valid':
+                                userForm.get('facultyId')?.touched &&
+                                userForm.get('facultyId')?.valid
+                            }"
+                               class="form-select" id="facultyId" name="facultyId" formControlName="facultyId"
                               [(ngModel)]='facultySelect'>
                                 <option  value="" disabled>--Seleccione--</option>
                                 <option [value]= "item.id" *ngFor="let item of facultys$ | async" >
                                   {{item.name}}
                                   </option>
                               </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              userForm.get('facultyId')?.hasError('required') &&
+                              userForm.get('facultyId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
                           </ng-container>
                         </div>
                             <ng-container *ngIf="actionMode ==3">
@@ -176,23 +282,53 @@
                           <div class="form-control">
                             <ng-container *ngIf="actionMode ==1">
                               <label for="sectionId" >Departamento</label>
-                              <select   class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
+                              <select   [ngClass]="{
+                                'is-invalid':
+                                userForm.get('sectionId')?.errors &&
+                                userForm.get('sectionId')?.touched,
+                                'is-valid':
+                                userForm.get('sectionId')?.touched &&
+                                userForm.get('sectionId')?.valid
+                            }"
+                              class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
                               [(ngModel)]='sectionSelect'>
                                 <option  value="">--Seleccione--</option>
                                 <option [value]="item.id" *ngFor="let item of sections$ | async" >
                                   {{item.name}}
                                   </option>
                               </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              userForm.get('sectionId')?.hasError('required') &&
+                              userForm.get('sectionId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
                           </ng-container>
                             <ng-container *ngIf="actionMode ==2">
                               <label for="sectionId" >Departamento</label>
-                              <select   class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
+                              <select  [ngClass]="{
+                                'is-invalid':
+                                userForm.get('sectionId')?.errors &&
+                                userForm.get('sectionId')?.touched,
+                                'is-valid':
+                                userForm.get('sectionId')?.touched &&
+                                userForm.get('sectionId')?.valid
+                            }"
+                               class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
                               [(ngModel)]='sectionSelect'>
                                <option  value="" disabled>--Seleccione--</option>
                                 <option [value]="item.id" *ngFor="let item of sections$ | async" >
                                   {{item.name}}
                                   </option>
                               </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              userForm.get('sectionId')?.hasError('required') &&
+                              userForm.get('sectionId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
                           </ng-container>
                         </div>
                             <ng-container *ngIf="actionMode ==3">
@@ -208,13 +344,28 @@
                       <div class="form-control">
                         <ng-container *ngIf="actionMode !=3">
                           <label for="role" >Rol</label>
-                        <select   class="form-select" id="role" name="role" formControlName="role" 
+                        <select    [ngClass]="{
+                          'is-invalid':
+                          userForm.get('role')?.errors &&
+                          userForm.get('role')?.touched,
+                          'is-valid':
+                          userForm.get('role')?.touched &&
+                          userForm.get('role')?.valid
+                      }"
+                        class="form-select" id="role" name="role" formControlName="role" 
                         [(ngModel)]='rollSelect'>
                           <option  value="" disabled >--Seleccione--</option>
                           <option value="Administrador">Administrador</option>
                           <option value="Técnico">Técnico</option>
                           <option value="Usuario">Usuario</option>
                         </select>
+                        <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                            userForm.get('role')?.hasError('required') &&
+                            userForm.get('role')?.touched
+                        "
+                        >
+                        Campo requerido
+                    </div>
                       </ng-container>
                         <ng-container *ngIf="actionMode ==3">
                           <div class="form-floating">
@@ -227,7 +378,15 @@
                         <div class="col-md-6">
                           <div class="form-floating">
                             <ng-container *ngIf="actionMode !=3">
-                            <input type="email" class="form-control" id="email" name="email" 
+                            <input [ngClass]="{
+                              'is-invalid':
+                              userForm.get('email')?.errors &&
+                              userForm.get('email')?.touched,
+                              'is-valid':
+                              userForm.get('email')?.touched &&
+                              userForm.get('email')?.valid
+                          }"
+                            type="email" class="form-control" id="email" name="email" 
                             placeholder="usuario@dominio.cu" 
                             formControlName="email"  autocomplete="off">
                           </ng-container>
@@ -235,6 +394,13 @@
                             <input type="email" class="form-control" id="email" name="email" 
                             placeholder="usuario@dominio.cu"  readonly=""
                             formControlName="email"  autocomplete="off">
+                            <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                            userForm.get('email')?.hasError('required') &&
+                            userForm.get('email')?.touched
+                        "
+                        >
+                        Campo requerido
+                    </div>
                           </ng-container>
                             <label for="email" >Email</label>
                           </div>
@@ -242,9 +408,24 @@
                         <div class="col-md-6">
                           <div class="form-floating">
                             <ng-container *ngIf="actionMode !=3">
-                            <input type="text" class="form-control" id="password"
+                            <input [ngClass]="{
+                              'is-invalid':
+                              userForm.get('password')?.errors &&
+                              userForm.get('password')?.touched,
+                              'is-valid':
+                              userForm.get('password')?.touched &&
+                              userForm.get('password')?.valid
+                          }"
+                            type="text" class="form-control" id="password"
                             name="password"  placeholder="******" 
                                 formControlName="password">
+                                <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                                userForm.get('password')?.hasError('required') &&
+                                userForm.get('password')?.touched
+                            "
+                            >
+                            Campo requerido
+                        </div>
                               </ng-container>
                                 <ng-container *ngIf="actionMode ==3">
                             <input type="text" class="form-control" id="password"

@@ -112,9 +112,23 @@
                             <div class="col-md-12">
                                 <div class="form-floating">
                                     <!-- <ng-container *ngIf="actionMode!=3"> -->
-                                      <input type="text" class="form-control" id="name" name="name" 
+                                      <input [ngClass]="{
+                                        'is-invalid':
+                                        facultysForm.get('name')?.errors &&
+                                        facultysForm.get('name')?.touched,
+                                        'is-valid':
+                                        facultysForm.get('name')?.touched &&
+                                        facultysForm.get('name')?.valid
+                                    }"
+                                      type="text" class="form-control" id="name" name="name" 
                                       placeholder="Nombre"
                                       formControlName="name" autocomplete="off">
+                                      <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                          facultysForm.get('name')?.hasError('required') &&
+                          facultysForm.get('name')?.touched
+                      "
+                      >Campo requerido
+                    </div>
                                     <!-- </ng-container> -->
                                     <!-- <ng-container *ngIf="actionMode==3">
                                       <input type="text" class="form-control" id="name" name="name" 
@@ -129,9 +143,23 @@
                             <div class="col-md-12">
                                 <div class="form-floating">
                                     <!-- <ng-container *ngIf="actionMode!=3"> -->
-                                      <input type="text" class="form-control" id="campus" name="campus" 
+                                      <input [ngClass]="{
+                                        'is-invalid':
+                                        facultysForm.get('campus')?.errors &&
+                                        facultysForm.get('campus')?.touched,
+                                        'is-valid':
+                                        facultysForm.get('campus')?.touched &&
+                                        facultysForm.get('campus')?.valid
+                                    }"
+                                      type="text" class="form-control" id="campus" name="campus" 
                                       placeholder="Sede"
                                       formControlName="campus" autocomplete="off">
+                                      <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                          facultysForm.get('campus')?.hasError('required') &&
+                          facultysForm.get('campus')?.touched
+                      "
+                      >Campo requerido
+                    </div>
                                     <!-- </ng-container>
                                     <ng-container *ngIf="actionMode==3">
                                       <input type="text" class="form-control" id="name" name="name" 
@@ -169,9 +197,23 @@
                             <div class="col-md-12">
                                 <div class="form-floating">
                                     <!-- <ng-container *ngIf="actionMode!=3"> -->
-                                      <input type="text" class="form-control" id="name" name="name" 
+                                      <input [ngClass]="{
+                                        'is-invalid':
+                                        sectionsForm.get('name')?.errors &&
+                                        sectionsForm.get('name')?.touched,
+                                        'is-valid':
+                                        sectionsForm.get('name')?.touched &&
+                                        sectionsForm.get('name')?.valid
+                                    }"
+                                       type="text" class="form-control" id="name" name="name" 
                                       placeholder="Asunto"
                                       formControlName="name" autocomplete="off">
+                                      <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                                      sectionsForm.get('name')?.hasError('required') &&
+                                      sectionsForm.get('name')?.touched
+                      "
+                      >Campo requerido
+                    </div>
                                     <!-- </ng-container>
                                     <ng-container *ngIf="actionMode==3">
                                       <input type="text" class="form-control" id="name" name="name" 

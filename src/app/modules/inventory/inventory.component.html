@@ -35,8 +35,8 @@
                   <tr class="table-light" *ngFor="let item of equipments; let i = index">
                     <th scope="row">{{i+1}}</th>
                     <td>{{item.name}}</td>
-                    <td>{{item.section}}</td>
-                    <td>{{item.faculty}}</td>
+                    <td>{{item.sections?.name}}</td>
+                    <td>{{item.facultys?.name}}</td>
                     <td>
                         <button type="button" class="btn btn-info btn-sm"  data-bs-target="#modalUsers" data-bs-toggle="modal"
                         style="margin-right: 10px;" (click)=" modalMode(2, item)">Detalles</button>
@@ -83,9 +83,24 @@
                     <fieldset>
                       <div class="form-floating">
                         <ng-container *ngIf="actionMode!=3">
-                          <input type="text" class="form-control" id="name" name="name" 
+                          <input [ngClass]="{
+                            'is-invalid':
+                            equipmentForm.get('name')?.errors &&
+                            equipmentForm.get('name')?.touched,
+                            'is-valid':
+                            equipmentForm.get('name')?.touched &&
+                            equipmentForm.get('name')?.valid
+                        }" 
+                          type="text" class="form-control" id="name" name="name" 
                           placeholder="Nombre y Apellidos"
                           formControlName="name" autocomplete="off">
+                          <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                          equipmentForm.get('name')?.hasError('required') &&
+                          equipmentForm.get('name')?.touched
+                      "
+                      >
+                      Campo requerido
+                  </div>
                         </ng-container>
                         <ng-container *ngIf="actionMode==3">
                           <input type="text" class="form-control" id="name" name="name" 
@@ -94,33 +109,130 @@
                         </ng-container>
                         <label for="name" >Nombre</label>
                       </div>
-                      
+
                       <div class="row">
                         <div class="col-md-6">
-                          <div class="form-floating">
-                            <ng-container *ngIf="actionMode !=3">
-                            <input type="text" class="form-control" id="faculty" name="faculty" 
-                            formControlName="faculty" autocomplete="off"  placeholder="Facultad">
+                          <div class="form-control">
+                            <ng-container *ngIf="actionMode == 1">
+                              <label for="facultyId" >Facultad</label>
+                              <select [ngClass]="{
+                                'is-invalid':
+                                equipmentForm.get('facultyId')?.errors &&
+                                equipmentForm.get('facultyId')?.touched,
+                                'is-valid':
+                                equipmentForm.get('facultyId')?.touched &&
+                                equipmentForm.get('facultyId')?.valid
+                            }"  
+                              class="form-select" id="facultyId" name="facultyId" formControlName="facultyId" 
+                              [(ngModel)]='facultySelect'>
+                                <option  value="" disabled>--Seleccione--</option>
+                                <option [value] = "item.id" *ngFor="let item of facultys$ | async" >
+                                  {{item.name}}
+                                  </option>
+                              </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              equipmentForm.get('facultyId')?.hasError('required') &&
+                              equipmentForm.get('facultyId')?.touched
+                          "
+                          >
+                          Campo requerido
+                        </div>
                           </ng-container>
+                            <ng-container *ngIf="actionMode == 2">
+                              <label for="facultyId" >Facultad</label>
+                              <select  [ngClass]="{
+                                'is-invalid':
+                                equipmentForm.get('facultyId')?.errors &&
+                                equipmentForm.get('facultyId')?.touched,
+                                'is-valid':
+                                equipmentForm.get('facultyId')?.touched &&
+                                equipmentForm.get('facultyId')?.valid
+                            }"
+                               class="form-select" id="facultyId" name="facultyId" formControlName="facultyId"
+                              [(ngModel)]='facultySelect'>
+                                <option  value="" disabled>--Seleccione--</option>
+                                <option [value]= "item.id" *ngFor="let item of facultys$ | async" >
+                                  {{item.name}}
+                                  </option>
+                              </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              equipmentForm.get('facultyId')?.hasError('required') &&
+                              equipmentForm.get('facultyId')?.touched
+                          "
+                          >
+                          Campo requerido
+                        </div>
+                          </ng-container>
+                        </div>
                             <ng-container *ngIf="actionMode ==3">
-                            <input type="text" class="form-control" id="faculty" name="faculty"  readonly=""
-                            formControlName="faculty" autocomplete="off"  placeholder="Facultad">
-                          </ng-container>
-                            <label for="faculty" >Facultad</label>
+                              <div class="form-floating">
+                            <input type="text" class="form-control" id="facultyId" name="facultyId"  readonly=""
+                            formControlName="facultyId" autocomplete="off"  placeholder="Facultad">
+                            <label for="facultyId" >Facultad</label>
                           </div>
+                        </ng-container>
+                         
                         </div>
                         <div class="col-md-6">
-                          <div class="form-floating">
-                            <ng-container *ngIf="actionMode !=3">
-                            <input type="text" class="form-control" id="section" name="section"  
-                            formControlName="section" autocomplete="off"  placeholder="Departamento">
+                          <div class="form-control">
+                            <ng-container *ngIf="actionMode ==1">
+                              <label for="sectionId" >Departamento</label>
+                              <select   [ngClass]="{
+                                'is-invalid':
+                                equipmentForm.get('sectionId')?.errors &&
+                                equipmentForm.get('sectionId')?.touched,
+                                'is-valid':
+                                equipmentForm.get('sectionId')?.touched &&
+                                equipmentForm.get('sectionId')?.valid
+                            }"
+                              class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
+                              [(ngModel)]='sectionSelect'>
+                                <option  value="">--Seleccione--</option>
+                                <option [value]="item.id" *ngFor="let item of sections$ | async" >
+                                  {{item.name}}
+                                  </option>
+                              </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              equipmentForm.get('sectionId')?.hasError('required') &&
+                              equipmentForm.get('sectionId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
                           </ng-container>
+                            <ng-container *ngIf="actionMode ==2">
+                              <label for="sectionId" >Departamento</label>
+                              <select   [ngClass]="{
+                                'is-invalid':
+                                equipmentForm.get('sectionId')?.errors &&
+                                equipmentForm.get('sectionId')?.touched,
+                                'is-valid':
+                                equipmentForm.get('sectionId')?.touched &&
+                                equipmentForm.get('sectionId')?.valid
+                            }"
+                              class="form-select" id="sectionId" name="sectionId" formControlName="sectionId"
+                              [(ngModel)]='sectionSelect'>
+                               <option  value="" disabled>--Seleccione--</option>
+                                <option [value]="item.id" *ngFor="let item of sections$ | async" >
+                                  {{item.name}}
+                                  </option>
+                              </select>
+                              <div class="invalid-feedback colorMessageErrors text-center" *ngIf="
+                              equipmentForm.get('sectionId')?.hasError('required') &&
+                              equipmentForm.get('sectionId')?.touched
+                          "
+                          >
+                          Campo requerido
+                      </div>
+                          </ng-container>
+                        </div>
                             <ng-container *ngIf="actionMode ==3">
-                            <input type="text" class="form-control" id="section" name="section"   readonly=""
-                            formControlName="section" autocomplete="off"  placeholder="Departamento">
+                              <div class="form-floating">
+                              <input type="text" class="form-control" id="sectionId" name="sectionId"   readonly=""
+                              formControlName="sectionId" autocomplete="off"  placeholder="Departamento">
+                              <label for="sectionId" >Departamento</label>
+                             </div>
                           </ng-container>
-                            <label for="section" >Departamento</label>
-                          </div>
                         </div>
                       </div>
 
@@ -136,6 +248,10 @@
                                   type="button" >+
                               </button></ng-container>
                             </div>
+                            <div class="hardColorsError text-center" 
+                            *ngIf="fieldHardwaresValidators == 2"
+                              >  Campos requeridos
+                           </div>
                               </div>
                              </div>
                              <ng-container *ngIf="actionMode !=3">

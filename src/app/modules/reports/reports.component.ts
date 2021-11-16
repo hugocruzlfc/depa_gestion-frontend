@@ -115,9 +115,9 @@ export class ReportsComponent implements OnInit {
       let sections: any[] = []
       //let incidentByMont = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       for (let index = 0; index < data.length; index++) {
-        const currentSection = data[index].section;
+        const currentFaculty = data[index].facultys?.name;
         let newSection={
-              name: currentSection,
+              name: currentFaculty,
               count: 1
         };
         let existSection = false;
