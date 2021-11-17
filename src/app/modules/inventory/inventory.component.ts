@@ -120,8 +120,8 @@ sections$ = this.campusService.sections;
     this.arrayHardwaresEdit = [];
     this.equipmentForm.patchValue({
       'name': item.name,
-      'faculty': item.faculty,
-      'section': item.section
+      'facultyId': item.facultys?.name,
+    'sectionId': item.sections?.name,
       });
       this.arrayHardwares = item.hardwares;
    }
