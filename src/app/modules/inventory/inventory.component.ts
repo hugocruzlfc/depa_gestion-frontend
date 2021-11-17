@@ -166,6 +166,8 @@ sections$ = this.campusService.sections;
     if (this.actionMode == 1) {
       var newEquipment: Equipment;
       newEquipment = this.equipmentForm.value;
+      newEquipment.facultyId = +this.equipmentForm.value.facultyId;
+      newEquipment.sectionId = +this.equipmentForm.value.sectionId;
       this.inventoryService.addNewEquipment(newEquipment,this.arrayHardwares).subscribe(data=>{
         this.getEquipments();
         this.notificationService.success('Equipo registrado correctamente',this.options);
